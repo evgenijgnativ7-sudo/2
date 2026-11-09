@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python — Робота зі списками</title>
+
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f8;
+            color: #252540;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        header {
+            background: #6254c7;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 15px;
+        }
+
+        .block {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 12px;
+        }
+
+        h2 {
+            color: #6254c7;
+        }
+
+        .command {
+            background: #f1efff;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+        }
+
+        code {
+            color: #5142b5;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            background: #202033;
+            color: white;
+            padding: 15px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        button {
+            background: #6254c7;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #493ba9;
+        }
+
+        #output {
+            background: #202033;
+            color: #a8f0bd;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            min-height: 60px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>🐍 Python: робота зі списками</h1>
+        <p>Основні команди та мініпроєкт</p>
+    </header>
+
+    <div class="block">
+        <h2>Що таке список?</h2>
+        <p>Список — це місце, де можна зберігати декілька значень в одній змінній.</p>
+
+        <code>fruits = ["яблуко", "банан", "груша"]</code>
+    </div>
+
+    <div class="block">
+        <h2>Основні команди Python</h2>
+
+        <div class="command">
+            <code>append()</code> — додає елемент у список.
+        </div>
+
+        <div class="command">
+            <code>insert()</code> — додає елемент на певне місце.
+        </div>
+
+        <div class="command">
+            <code>remove()</code> — видаляє елемент зі списку.
+        </div>
+
+        <div class="command">
+            <code>pop()</code> — видаляє елемент за номером.
+        </div>
+
+        <div class="command">
+            <code>clear()</code> — очищає весь список.
+        </div>
+
+        <div class="command">
+            <code>len()</code> — показує кількість елементів.
+        </div>
+
+        <div class="command">
+            <code>in</code> — перевіряє, чи є елемент у списку.
+        </div>
+
+        <div class="command">
+            <code>sort()</code> — сортує список.
+        </div>
+
+        <div class="command">
+            <code>reverse()</code> — змінює порядок елементів.
+        </div>
+
+        <div class="command">
+            <code>split()</code> — розділяє текст на список.
+        </div>
+
+        <div class="command">
+            <code>join()</code> — об'єднує елементи списку в текст.
+        </div>
+    </div>
+
+    <div class="block">
+        <h2>🎵 Мініпроєкт: мій музичний плейлист</h2>
+
+        <p>Програма дозволяє створити плейлист і знайти потрібну пісню.</p>
+
+        <textarea id="editor">print("🎵 МІЙ МУЗИЧНИЙ ПЛЕЙЛИСТ 🎵")
+
+pleylist = input("Введіть пісні через кому: ").split(", ")
+
+print("🎶 Ваш плейлист:", pleylist)
+
+nazva = input("Яку пісню шукаємо? ")
+
+if nazva in pleylist:
+    print("🎉 Ура! Пісню знайдено!")
+else:
+    print("😔 Такої пісні поки немає.")
+
+print("🎧 Усього пісень:", len(pleylist))
+print("🎵 Гарного прослуховування!")</textarea>
+
+        <button onclick="runCode()">▶ Запустити Python</button>
+
+        <h3>Результат роботи:</h3>
+        <div id="output">Тут з'явиться результат програми.</div>
+    </div>
+
+    <div class="block">
+        <h2>Перевірка програми</h2>
+
+        <p><b>Приклад 1:</b> Вводимо Believer, Flowers, Perfect. Шукаємо Flowers — пісню знайдено.</p>
+
+        <p><b>Приклад 2:</b> Вводимо Believer, Flowers, Perfect. Шукаємо Hello — пісні немає.</p>
+
+        <h3>Обмеження</h3>
+        <p>Назви пісень вводяться через кому. Пошук працює за точною назвою.</p>
+    </div>
+
+</div>
+
+<script>
+    let pyodide;
+
+    async function loadPython() {
+        pyodide = await loadPyodide();
+    }
+
+    loadPython();
+
+    async function runCode() {
+        const code = document.getElementById("editor").value;
+        const output = document.getElementById("output");
+
+        if (!pyodide) {
+            output.textContent = "Зачекайте, Python завантажується...";
+            return;
+        }
+
+        try {
+            let result = await pyodide.runPythonAsync(`
+import sys
+import io
+import builtins
+import js
+
+old_stdout = sys.stdout
+old_input = builtins.input
+captured = io.StringIO()
+
+sys.stdout = captured
+builtins.input = lambda prompt="": js.prompt(prompt) or ""
+
+try:
+    exec(${JSON.stringify(code)})
+finally:
+    sys.stdout = old_stdout
+    builtins.input = old_input
+
+captured.getvalue()
+            `);
+
+            output.textContent = result;
+        } catch (error) {
+            output.textContent = "Помилка: " + error;
+        }
+    }
+</script>
+
+</body>
+</html>
